@@ -73,6 +73,39 @@ class WordSearch:
                     sequences.add(substring)
         return sequences
     
+    def get_all_vertical_sequences_with_positions(self, min_length=2):
+        """
+        Versión vertical con posiciones (fila,col) inicial y final.
+        """
+        results = []
+        if not self.is_valid_puzzle():
+            return results
+
+        rows = len(self.puzzle)
+        cols = len(self.puzzle[0])
+
+        for col in range(cols):
+            # Construimos un string de la columna y guardamos sus posiciones.
+            col_chars = []
+            positions = []
+            for row in range(rows):
+                col_chars.append(self.puzzle[row][col])
+                positions.append((row, col))
+
+            col_str = "".join(col_chars)
+            col_len = len(col_str)
+
+            for start in range(col_len):
+                for end in range(start + min_length, col_len + 1):
+                    substring = col_str[start:end]
+                    # La posición inicial es positions[start], 
+                    # la final es positions[end - 1].
+                    start_pos = positions[start]
+                    end_pos = positions[end - 1]
+                    results.append((substring, start_pos, end_pos))
+
+        return results
+
     def get_all_diagonal_sequences_tl_br(self, min_length=2):
         """
         Obtiene todas las secuencias diagonales (contiguas) en la dirección

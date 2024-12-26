@@ -277,3 +277,36 @@ def test_get_all_horizontal_sequences_with_coords():
     # Comprobamos que cada resultado esperado está en la lista devuelta
     for expected in expected_sequences:
         assert expected in sequences, f"Expected {expected} not found in results"
+
+def test_get_all_vertical_sequences_with_coords():
+    puzzle = [
+        ["A", "B", "C"],
+        ["D", "E", "F"],
+        ["G", "H", "I"]
+    ]
+    ws = WordSearch(puzzle)
+
+    # Resultado esperado
+    expected_sequences = [
+        ('AD', (0, 0), (1, 0)),
+        ('DG', (1, 0), (2, 0)),
+        ('ADG', (0, 0), (2, 0)),
+        ('BE', (0, 1), (1, 1)),
+        ('EH', (1, 1), (2, 1)),
+        ('BEH', (0, 1), (2, 1)),
+        ('CF', (0, 2), (1, 2)),
+        ('FI', (1, 2), (2, 2)),
+        ('CFI', (0, 2), (2, 2)),
+    ]
+
+    # Obtenemos las secuencias generadas por la función
+    sequences = ws.get_all_vertical_sequences_with_positions(min_length=2)
+
+    # Comprobamos que el tamaño de la lista es el esperado
+    assert len(sequences) == len(expected_sequences), (
+        f"Expected {len(expected_sequences)} sequences, got {len(sequences)}"
+    )
+
+    # Comprobamos que cada resultado esperado está en la lista devuelta
+    for expected in expected_sequences:
+        assert expected in sequences, f"Expected {expected} not found in results"
