@@ -75,3 +75,35 @@ def test_get_all_vertical_sequences():
     # Comprobamos que no genera secuencias de longitud 1
     assert "A" not in sequences
     assert "F" not in sequences
+
+def test_get_all_diagonal_sequences_tl_br():
+    """
+    Test para comprobar las diagonales en dirección
+    arriba-izquierda → abajo-derecha.
+    """
+    puzzle = [
+        ["A", "B", "C"],
+        ["D", "E", "F"],
+        ["G", "H", "I"]
+    ]
+    ws = WordSearch(puzzle)
+    sequences = ws.get_all_diagonal_sequences_tl_br(min_length=2)
+
+    # Diagonales con longitud >= 2 en top-left → bottom-right:
+    #   * Desde (0,0): "A", "E", "I" => "AEI" (longitud 3), y también "AE", "EI"
+    #   * Desde (0,1): "B", "F" => "BF" (longitud 2)
+    #   * Desde (0,2): "C" => no llega a min_length=2
+    #   * Desde (1,0): "D", "H" => "DH"
+    #   * Desde (2,0): "G" => tampoco llega
+    # Por tanto, con longitud >= 2 tenemos: "AE", "EI", "AEI", "BF", "DH"
+
+    assert "AE" in sequences
+    assert "EI" in sequences
+    assert "AEI" in sequences
+    assert "BF" in sequences
+    assert "DH" in sequences
+
+    # Comprobamos que secuencias de 1 no aparezcan
+    assert "A" not in sequences
+    assert "C" not in sequences
+    assert "G" not in sequences
