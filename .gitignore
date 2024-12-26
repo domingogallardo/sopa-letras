@@ -1,0 +1,28 @@
+# Entornos virtuales
+venv/
+env/
+
+# Archivos temporales de Python
+__pycache__/
+*.py[cod]
+
+# Archivos de configuración de entorno
+*.env
+
+# Archivos de log
+*.log
+
+# Configuraciones locales de IDEs
+.vscode/
+.idea/
+
+# Archivos de caché de pytest
+.pytest_cache/
+
+# Distribución de paquetes
+build/
+dist/
+*.egg-info/
+
+# Configuración de MacOS
+.DS_Store
