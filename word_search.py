@@ -12,7 +12,6 @@ class WordSearch:
                 return False
         return True
     
-
     def get_all_horizontal_sequences(self, min_length=2):
         """
         Devuelve un set con todas las secuencias contiguas de longitud >= min_length
@@ -28,7 +27,24 @@ class WordSearch:
                     sequences.add(substring)
         return sequences
     
-# --- NUEVO MÉTODO ---
+    def get_all_horizontal_sequences_with_positions(self, min_length=2):
+        """
+        Versión que, además de la secuencia, devuelve la posición (fila, col) inicial y final.
+        """
+        results = []
+        for row_idx, row in enumerate(self.puzzle):
+            row_str = "".join(row)
+            row_len = len(row_str)
+            for start_col in range(row_len):
+                for end_col in range(start_col + min_length, row_len + 1):
+                    substring = row_str[start_col:end_col]
+                    # La posición inicial es (row_idx, start_col), 
+                    # la final es (row_idx, end_col - 1).
+                    results.append((substring,
+                                    (row_idx, start_col),
+                                    (row_idx, end_col - 1)))
+        return results
+
     def get_all_vertical_sequences(self, min_length=2):
         """
         Devuelve un set con todas las secuencias contiguas de longitud >= min_length
@@ -95,7 +111,6 @@ class WordSearch:
 
         return sequences
     
-    # --- NUEVO MÉTODO ---
     def get_all_diagonal_sequences_tr_bl(self, min_length=2):
         """
         Obtiene todas las secuencias diagonales (contiguas) en la dirección 

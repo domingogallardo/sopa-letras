@@ -249,3 +249,31 @@ def test_get_all_diagonal_sequences_tr_bl_large():
     assert "D" not in sequences
     assert "H" not in sequences
     assert "P" not in sequences
+
+def test_get_all_horizontal_sequences_with_coords():
+    puzzle = [
+        ["A", "B", "C"],
+        ["X", "Y", "Z"]
+    ]
+    ws = WordSearch(puzzle)
+
+    # Resultado esperado
+    expected_sequences = [
+        ('AB', (0, 0), (0, 1)),
+        ('ABC', (0, 0), (0, 2)),
+        ('BC', (0, 1), (0, 2)),
+        ('XY', (1, 0), (1, 1)),
+        ('XYZ', (1, 0), (1, 2)),
+        ('YZ', (1, 1), (1, 2)),
+    ]
+        # Obtenemos las secuencias generadas por la función
+    sequences = ws.get_all_horizontal_sequences_with_positions(min_length=2)
+
+    # Comprobamos que el tamaño de la lista es el esperado
+    assert len(sequences) == len(expected_sequences), (
+        f"Expected {len(expected_sequences)} sequences, got {len(sequences)}"
+    )
+
+    # Comprobamos que cada resultado esperado está en la lista devuelta
+    for expected in expected_sequences:
+        assert expected in sequences, f"Expected {expected} not found in results"
