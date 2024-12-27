@@ -359,3 +359,54 @@ def test_get_all_diagonal_sequences_tl_br_with_coords():
     # Verificamos que cada secuencia esperada esté realmente en los resultados
     for expected in expected_sequences:
         assert expected in sequences, f"La secuencia {expected} no está presente en los resultados."
+
+def test_get_all_diagonal_sequences_tr_bl_with_coords():
+    puzzle = [
+        ["A", "B", "C", "D"],
+        ["E", "F", "G", "H"],
+        ["I", "J", "K", "L"],
+        ["M", "N", "O", "P"]
+    ]
+    ws = WordSearch(puzzle)
+
+    # Esperamos estas diagonales con sus subcadenas (≥ 2) y coordenadas:
+    expected_sequences = [
+        # Desde (0,3) D → G → J → M => "DGJM"
+        ("DG",   (0,3), (1,2)),
+        ("GJ",   (1,2), (2,1)),
+        ("JM",   (2,1), (3,0)),
+        ("DGJ",  (0,3), (2,1)),
+        ("GJM",  (1,2), (3,0)),
+        ("DGJM", (0,3), (3,0)),
+
+        # Desde (0,2) C → F → I => "CFI"
+        ("CF",   (0,2), (1,1)),
+        ("FI",   (1,1), (2,0)),
+        ("CFI",  (0,2), (2,0)),
+
+        # Desde (0,1) B → E => "BE"
+        ("BE",   (0,1), (1,0)),
+
+        # Desde (0,0) A => longitud 1 (no se incluyen)
+
+        # Desde (1,3) H → K → N => "HKN"
+        ("HK",   (1,3), (2,2)),
+        ("KN",   (2,2), (3,1)),
+        ("HKN",  (1,3), (3,1)),
+
+        # Desde (2,3) L → O => "LO"
+        ("LO",   (2,3), (3,2)),
+
+        # Desde (3,3) P => longitud 1 (no se incluye)
+    ]
+
+    sequences = ws.get_all_diagonal_sequences_tr_bl_with_positions(min_length=2)
+
+    # Comprobamos que el número de secuencias coincida con lo esperado
+    assert len(sequences) == len(expected_sequences), (
+        f"Se esperaban {len(expected_sequences)} secuencias, pero se obtuvieron {len(sequences)}"
+    )
+
+    # Comprobamos que cada secuencia esperada está efectivamente en la lista de resultados
+    for expected in expected_sequences:
+        assert expected in sequences, f"La secuencia {expected} no está presente en los resultados."
