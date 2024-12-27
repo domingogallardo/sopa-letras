@@ -310,3 +310,52 @@ def test_get_all_vertical_sequences_with_coords():
     # Comprobamos que cada resultado esperado está en la lista devuelta
     for expected in expected_sequences:
         assert expected in sequences, f"Expected {expected} not found in results"
+
+def test_get_all_diagonal_sequences_tl_br_with_coords():
+    puzzle = [
+        ["A", "B", "C", "D"],
+        ["E", "F", "G", "H"],
+        ["I", "J", "K", "L"],
+        ["M", "N", "O", "P"]
+    ]
+    ws = WordSearch(puzzle)
+
+    # Se esperan las diagonales y sus subcadenas (longitud ≥ 2),
+    # junto con las coordenadas (fila,columna) de inicio y fin.
+    expected_sequences = [
+        # Diagonal principal: A-F-K-P
+        ("AF",   (0, 0), (1, 1)),
+        ("FK",   (1, 1), (2, 2)),
+        ("KP",   (2, 2), (3, 3)),
+        ("AFK",  (0, 0), (2, 2)),
+        ("FKP",  (1, 1), (3, 3)),
+        ("AFKP", (0, 0), (3, 3)),
+
+        # Diagonal B-G-L
+        ("BG",   (0, 1), (1, 2)),
+        ("GL",   (1, 2), (2, 3)),
+        ("BGL",  (0, 1), (2, 3)),
+
+        # Diagonal C-H
+        ("CH",   (0, 2), (1, 3)),
+
+        # Diagonal E-J-O
+        ("EJ",   (1, 0), (2, 1)),
+        ("JO",   (2, 1), (3, 2)),
+        ("EJO",  (1, 0), (3, 2)),
+
+        # Diagonal I-N
+        ("IN",   (2, 0), (3, 1)),
+    ]
+
+    # Obtenemos las secuencias que genera nuestra clase
+    sequences = ws.get_all_diagonal_sequences_tl_br_with_positions(min_length=2)
+
+    # Comprobamos que el número total de secuencias es el esperado
+    assert len(sequences) == len(expected_sequences), (
+        f"Se esperaban {len(expected_sequences)} secuencias, pero se obtuvieron {len(sequences)}"
+    )
+
+    # Verificamos que cada secuencia esperada esté realmente en los resultados
+    for expected in expected_sequences:
+        assert expected in sequences, f"La secuencia {expected} no está presente en los resultados."

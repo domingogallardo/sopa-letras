@@ -144,6 +144,53 @@ class WordSearch:
 
         return sequences
     
+    def get_all_diagonal_sequences_tl_br_with_positions(self, min_length=2):
+        """
+        Diagonales arriba-izquierda → abajo-derecha con posiciones.
+        Devuelve una lista de tuplas (substring, (fila_inicial, col_inicial), (fila_final, col_final)).
+        """
+        results = []
+        if not self.is_valid_puzzle():
+            return results
+
+        rows = len(self.puzzle)
+        cols = len(self.puzzle[0])
+
+        def diagonal_from(r, c):
+            diagonal_chars = []
+            diagonal_positions = []
+            row, col = r, c
+            while row < rows and col < cols:
+                diagonal_chars.append(self.puzzle[row][col])
+                diagonal_positions.append((row, col))
+                row += 1
+                col += 1
+            return "".join(diagonal_chars), diagonal_positions
+
+        # Recorremos la primera fila
+        for start_col in range(cols):
+            diag_str, diag_positions = diagonal_from(0, start_col)
+            length = len(diag_str)
+            for start in range(length):
+                for end in range(start + min_length, length + 1):
+                    substring = diag_str[start:end]
+                    start_pos = diag_positions[start]
+                    end_pos = diag_positions[end - 1]
+                    results.append((substring, start_pos, end_pos))
+
+        # Recorremos la primera columna (comenzando en row=1 para no repetir la diagonal [0,0])
+        for start_row in range(1, rows):
+            diag_str, diag_positions = diagonal_from(start_row, 0)
+            length = len(diag_str)
+            for start in range(length):
+                for end in range(start + min_length, length + 1):
+                    substring = diag_str[start:end]
+                    start_pos = diag_positions[start]
+                    end_pos = diag_positions[end - 1]
+                    results.append((substring, start_pos, end_pos))
+
+        return results
+    
     def get_all_diagonal_sequences_tr_bl(self, min_length=2):
         """
         Obtiene todas las secuencias diagonales (contiguas) en la dirección 
