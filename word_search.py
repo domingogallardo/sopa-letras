@@ -16,7 +16,7 @@ class WordSearch:
     def meets_criteria(word):
         """
         Función auxiliar para determinar si una palabra cumple con el criterio.
-        En este caso: solo contiene '1's
+        En este caso: es la palabra SOL
         """
         return word == 'SOL'
 
